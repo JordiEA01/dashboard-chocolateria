@@ -1,33 +1,51 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-
-# Configuración de la página
-st.set_page_config(page_title="Dashboard Interactivo de Internacionalización", layout="wide")
-
-st.title("🌎 Dashboard Interactivo para Análisis de Internacionalización")
-
-# === 1. DATOS DE BARRERAS DE ENTRADA ===
-barreras_data = pd.DataFrame({
-    'País': ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Ecuador'],
-    'Barrera de Entrada': ['Regulaciones Comerciales', 'Impuestos Altos', 'Barreras Culturales', 'Competencia Local', 'Desafíos Logísticos'],
-    'Nivel de Dificultad (1-10)': [7, 6, 5, 8, 6]
-})
-
-# === 2. DATOS DE CLIENTES ===
-clientes_data = pd.DataFrame({
-    'Cliente': ['Chocolate & Co', 'Cocoa Kingdom', 'Sweet Delights', 'Cocoa Trading', 'Chocolate World'],
-    'País': ['Argentina', 'Brasil', 'Chile', 'Colombia', 'Ecuador'],
-    'Tamaño de la Empresa': ['Mediana', 'Grande', 'Pequeña', 'Mediana', 'Grande'],
-    'Demanda Anual (Toneladas)': [150, 300, 50, 100, 250]
-})
-
-# === 3. DATOS DE EXPORTACIONES ===
-exportaciones_data = pd.DataFrame({
-    'País': ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Ecuador'],
-    'Exportaciones (USD millones)': [4000, 1500, 1200, 3000, 2500]
-})
-
-# === 4. DATOS DE SEGMENTO DE CLIENTES ===
-segmento_data = pd.D_
+import matplotlib.pyplot as plt
+# URLs de los archivos CSV
+clientes_url = "https://raw.githubusercontent.com/TU_USUARIO/Dashboard-ChocolateExport/main/clientes.csv"
+mercados_url = "https://raw.githubusercontent.com/TU_USUARIO/DashboardChocolate-Export/main/mercados.csv"
+exportaciones_url = "https://raw.githubusercontent.com/TU_USUARIO/DashboardChocolate-Export/main/exportaciones.csv"
+barreras_url = "https://raw.githubusercontent.com/TU_USUARIO/Dashboard-ChocolateExport/main/barreras.csv"
+clientes = pd.read_csv(clientes_url)
+mercados = pd.read_csv(mercados_url)
+exportaciones = pd.read_csv(exportaciones_url)
+barreras = pd.read_csv(barreras_url)
+# Título del Dashboard
+st.title(" Dashboard Interactivo de Exportaciones de Chocolates")
+# Filtro de país
+paises = exportaciones["País"].unique()
+pais_seleccionado = st.selectbox("Selecciona un país para ver los detalles", paises)
+# Mostrar datos de clientes
+st.subheader(" Clientes")
+clientes_filtrados = clientes[clientes["País"] == pais_seleccionado]
+st.dataframe(clientes_filtrados)
+# Mostrar datos de exportaciones
+st.subheader(" Exportaciones de Chocolates")
+exportaciones_filtradas = exportaciones[exportaciones["País"] == pais_seleccionado]
+fig, ax = plt.subplots()
+ax.bar(exportaciones_filtradas["País"], exportaciones_filtradas["Exportaciones (USD
+millones)"], color='#2E86C1')
+ax.set_xlabel("País")
+ax.set_ylabel("Exportaciones (USD millones)")
+ax.set_title(f"Exportaciones de Chocolates en {pais_seleccionado}")
+plt.xticks(rotation=45)
+st.pyplot(fig)
+# Mostrar datos de mercados
+st.subheader(" Segmentos de Mercado")
+mercados_filtrados = mercados[mercados["País"] == pais_seleccionado]
+st.dataframe(mercados_filtrados)
+# Mostrar barreras de entrada
+st.subheader(" Barreras de Entrada")
+barreras_filtradas = barreras[barreras["País"] == pais_seleccionado]
+st.dataframe(barreras_filtradas)
+# Análisis Comparativo
+st.subheader(" Análisis Comparativo")
+fig2, ax2 = plt.subplots(figsize=(8, 5))
+ax2.bar(mercados["País"], mercados["Tamaño del Mercado (USD millones)"],
+color='#F39C12')
+ax2.set_xlabel("País")
+ax2.set_ylabel("Tamaño del Mercado (USD millones)")
+ax2.set_title("Comparación de Tamaños de Mercado")
+plt.xticks(rotation=45)
+st.pyplot(fig2)
 
