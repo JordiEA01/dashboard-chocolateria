@@ -24,7 +24,6 @@ st.subheader(" Exportaciones de Chocolates")
 exportaciones_filtradas = exportaciones[exportaciones["País"] == pais_seleccionado]
 fig, ax = plt.subplots()
 
-millones)"], color='#2E86C1')
 ax.set_xlabel("País")
 ax.set_ylabel("Exportaciones (USD millones)")
 ax.set_title(f"Exportaciones de Chocolates en {pais_seleccionado}")
